@@ -1,0 +1,5 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/,
+Prompt ChatGPT.txt,
+Prompt MongoDB.txt

@@ -1,0 +1,128 @@
+voglio creare la mia libreria con database mongodb. 
+come puoi vedere dal codice, l ho gia creata. con funzione main e le classi.
+Tutto funziona, ma ovviamente gira solo il locale. Da qui, l esigenza del db mongo
+
+Vorrei inanzitutto dividere il codice in compartimenti stagni per essere piu leggibile ed ordinato secondo la funzione che svolge ogni parte.
+Ovvero: 
+- Index (qua quindi ci sarà il risultante finale della funzione che farà partire...se non erro)
+- classe Libro (conterrà tutti i parametri per la creazione di un oggetto libro: titolo,atuore, genere,codice,copie)
+- classe database_mongo (avra quindi metodi connetti e disconnetti)
+- classe gestione_Libri (conterrà tutti i metodi collegati a libro: crea, modifica, leggi, elimina..ecc)
+- classe gestione_interfaccia (che collegherà database_mongo per avviare tutta l applicazione e il ciclo while per richiedere tramite menu con selezione a tastiera, 
+ogni volta che azione si vuole compiere, finche l utente non selezionerà quindi il programma)
+
+Come vedi vorrei dividere il file e quindi il codice, e farlo con codice OOP.
+
+Ovviamente tutto ciò, deve collegarsi al mio Database mongo per compiere le azioni.
+
+Vorrei quindi che mi auitassi in questo grande e complicato progetto per me, che sono agli inizi.
+Ti passo quello che ho gia fatto ed è funzionante.
+Teniamo un approccio il piu pulito e ordinato possibile, non dando a me niente per scontato. Dai portiamo a casa il risultato!
+
+
+# @audit Libreria con classi
+
+from InquirerPy import prompt
+
+
+class Libro:
+    def __init__(
+        self,
+        titolo="Unknown",
+        autore="Unknown",
+        genere="Unknown",
+        codice=111111,
+        copie=0,
+    ):
+        self.titolo = titolo
+        self.autore = autore
+        self.genere = genere
+        self.codice = codice
+        self.copie = copie
+
+    def __str__(self):
+        return (
+            f"\n📚 {self.titolo} 📚\n"
+            f"Autore: {self.autore}\n"
+            f"Genere: {self.genere}\n"
+            f"ISBN: {self.codice}\n"
+            f"Copie disponibili: {self.copie}\n"
+            f"{'-'*30}"
+        )
+
+
+class Libreria:
+    def __init__(self):
+        self.elenco_libri = []
+
+    def add_book(self):
+        titolo = input("Inserisci il Titolo del libro: ")
+        autore = input("Inserisci l'Autore del libro: ")
+        genere = input("Inserisci il Genere: ")
+        codice = int(input("Inserisci il codice ISBN: "))
+        copie = int(input("Inserisci il numero di copie disponibili: "))
+
+        libro = Libro(titolo, autore, genere, codice, copie)
+        self.elenco_libri.append(libro)
+        print(f"Libro '{libro}' aggiunto con successo!")
+
+    def view_books_list(self):
+        if not self.elenco_libri:
+            print("La libreria è vuota.")
+        else:
+            for libro in self.elenco_libri:
+                print(f"- {libro}")
+
+    def search_book_by_title(self):
+        titolo = input("Inserisci il titolo del libro da cercare: ")
+        for libro in self.elenco_libri:
+            if libro.titolo.lower() == titolo.lower():
+                print(f"\n✔️  Trovato: {libro}")
+                return
+        print("\n✖️  Mi spiace, libro non trovato.")
+
+    def remove_book(self):
+        titolo = input("Inserisci libro da rimuovere: ")
+        for i, libro in enumerate(self.elenco_libri):
+            if libro.titolo.lower() == titolo.lower():
+                print(f" {libro} eliminato con successo.\n")
+                del self.elenco_libri[i]
+                return
+            else:
+                print("Mi spiace, non ho trovato il libro.")
+
+
+domanda = {
+    "type": "list",
+    "name": "scelta",
+    "message": "Menu Libreria Mele: ",
+    "choices": [
+        "Visualizza elenco completo",
+        "Aggiungi nuovo libro",
+        "Cerca",
+        "Elimina libro",
+        "Chiudi programma",
+    ],
+}
+
+
+def main():
+    libreria = Libreria()
+    while True:
+        ask = prompt(domanda)
+        if ask["scelta"] == "Visualizza elenco completo":
+            libreria.view_books_list()
+        elif ask["scelta"] == "Aggiungi nuovo libro":
+            libreria.add_book()
+        elif ask["scelta"] == "Cerca":
+            libreria.search_book_by_title()
+        elif ask["scelta"] == "Elimina libro":
+            libreria.remove_book()
+        elif ask["scelta"] == "Chiudi programma":
+            print("Uscita dal programma.")
+            break
+        else:
+            print("Operazione non valida. Riprova.")
+
+
+main()
