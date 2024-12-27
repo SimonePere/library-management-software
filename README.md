@@ -109,5 +109,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For questions or suggestions, please contact [Simone Pere](mailto:your.email@example.com).
+For questions or suggestions, please contact [Simone Mele](https://simone-mele-portfolio.web.app/).
 
