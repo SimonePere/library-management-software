@@ -3,8 +3,6 @@ from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
 
-# host = "localhost"
-# db_name = "libreria_mele"
 
 
 class DatabaseMongo:
